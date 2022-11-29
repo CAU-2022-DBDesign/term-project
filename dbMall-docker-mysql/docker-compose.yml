@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  mysql:
+    container_name: dbMall
+    image: mysql:8.0.29
+    restart: always
+    environment:
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./init/:/docker-entrypoint-initdb.d/
+    ports:
+      - ${REQ_PORT}:${DB_PORT}

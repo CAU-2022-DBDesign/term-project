@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'cau.dbd'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = java.classesDirectory
+    }
+}
+
+ext {
+    javaMainClass = "cau.dbd.Main"
+}
+
+dependencies {
+    // JPA
+    implementation 'org.hibernate:hibernate-entitymanager:5.6.14.Final'
+    // MySQL
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    //Lombok
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cau.dbd.Main'
+    }
+}
