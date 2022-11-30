@@ -12,8 +12,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@IdClass(ItemImgPK.class)
 public class ItemImg {
-    @EmbeddedId
-    private ItemImgPK itemImgPK;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name="itemId")
+    private Item item;
+
+    @Id
+    private String fileName;
 
 }
