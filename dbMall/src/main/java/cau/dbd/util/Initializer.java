@@ -1,11 +1,12 @@
 package cau.dbd.util;
 
-import cau.dbd.entity.Category;
 import cau.dbd.entity.Consumer;
-import cau.dbd.entity.Item;
 import cau.dbd.entity.Member.Gender;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
+import cau.dbd.entity.item.Category;
+import cau.dbd.entity.item.Item;
+
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

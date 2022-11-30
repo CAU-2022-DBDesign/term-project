@@ -113,4 +113,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+
+dbMall/.idea/**
+
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,macos,windows
