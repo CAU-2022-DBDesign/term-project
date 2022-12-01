@@ -1,6 +1,7 @@
 package cau.dbd.entity.item;
 
 import cau.dbd.entity.Consumer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,4 +29,11 @@ public class Basket {
     private Item item;
 
     private int quantity;
+
+    @Builder
+    public Basket(Consumer consumer, Item item, int quantity) {
+        this.consumer = consumer;
+        this.item = item;
+        this.quantity = quantity;
+    }
 }

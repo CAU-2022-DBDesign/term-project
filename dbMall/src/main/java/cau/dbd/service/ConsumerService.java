@@ -1,7 +1,10 @@
 package cau.dbd.service;
 
+import cau.dbd.entity.Consumer;
 import cau.dbd.entity.Member;
 import cau.dbd.entity.Order;
+import cau.dbd.entity.item.Basket;
+import cau.dbd.entity.item.Item;
 import cau.dbd.util.MyScanner;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -47,5 +50,23 @@ public class ConsumerService {
         });
         em.close();
     }
+
+
+    /**
+     * 장바구니 추가
+     * @param consumer
+     * @param itemId
+     * @param quantity
+     */
+    private void insertBasket(Consumer consumer, int itemId, int quantity) {
+
+        EntityManager em = emf.createEntityManager();
+        Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class).setParameter("itemId", itemId).getSingleResult();
+        Basket basket = Basket.builder().consumer(consumer).item(item).quantity(quantity).build();
+        em.persist(basket);
+        em.close();
+
+    }
+
 
 }
