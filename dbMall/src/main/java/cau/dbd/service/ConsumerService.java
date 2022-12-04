@@ -9,6 +9,7 @@ import cau.dbd.entity.Payment;
 import cau.dbd.entity.Payment.Method;
 import cau.dbd.entity.item.Basket;
 import cau.dbd.entity.item.Item;
+import cau.dbd.entity.item.ItemImg;
 import cau.dbd.util.MyScanner;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import lombok.AllArgsConstructor;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
 @AllArgsConstructor
 public class ConsumerService {
@@ -140,10 +142,33 @@ public class ConsumerService {
     private void insertBasket(Consumer consumer, int itemId, int quantity) {
 
         EntityManager em = emf.createEntityManager();
-        Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class).setParameter("itemId", itemId).getSingleResult();
+        Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class)
+                .setParameter("itemId", itemId).getSingleResult();
         Basket basket = Basket.builder().consumer(consumer).item(item).quantity(quantity).build();
         em.persist(basket);
         em.close();
+    }
+
+    private void showItemInfo(int itemId) {
+
+        System.out.println("-- Show Item Information --");
+        EntityManager em = emf.createEntityManager();
+        Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class)
+                .setParameter("itemId", itemId).getSingleResult();
+
+        List<ItemImg> itemImg = em.createQuery("select e from ItemImg e  where e.item = :item", ItemImg.class)
+                .setParameter("item", item).getResultList();
+
+        System.out.println(">> Item Name : "+item.getName());
+        System.out.println(">> Item Category : "+item.getCategory());
+        System.out.println(">> Item Price : "+item.getPrice());
+        System.out.println(">> Item Stock : "+item.getStock());
+        System.out.println(">> Item Description : "+item.getDescription());
+
+        for (ItemImg img : itemImg) {
+            System.out.println(">> Item Img Filename : "+img.getFileName());
+        }
+
 
     }
 }
