@@ -7,6 +7,7 @@ import cau.dbd.entity.OrderStatus;
 import cau.dbd.entity.OrderStatus.Status;
 import cau.dbd.entity.Payment;
 import cau.dbd.entity.Payment.Method;
+import cau.dbd.entity.item.Basket;
 import cau.dbd.entity.item.Item;
 import cau.dbd.util.MyScanner;
 import java.util.Arrays;
@@ -128,5 +129,21 @@ public class ConsumerService {
         } finally {
             em.close();
         }
+    }
+
+    /**
+       * 장바구니 추가
+     * @param consumer
+     * @param itemId
+     * @param quantity
+     */
+    private void insertBasket(Consumer consumer, int itemId, int quantity) {
+
+        EntityManager em = emf.createEntityManager();
+        Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class).setParameter("itemId", itemId).getSingleResult();
+        Basket basket = Basket.builder().consumer(consumer).item(item).quantity(quantity).build();
+        em.persist(basket);
+        em.close();
+
     }
 }

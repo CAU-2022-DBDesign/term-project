@@ -8,8 +8,10 @@ import cau.dbd.entity.OrderStatus;
 import cau.dbd.entity.OrderStatus.Status;
 import cau.dbd.entity.item.Category;
 import cau.dbd.entity.item.Item;
+import cau.dbd.entity.item.ItemImg;
 
 import java.time.LocalDate;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -115,6 +117,16 @@ public class Initializer {
             em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
             em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
             em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
+
+            /*--------------- ItemImg ------------*/
+            em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
 
             tx.commit();
         } catch (Exception e) {

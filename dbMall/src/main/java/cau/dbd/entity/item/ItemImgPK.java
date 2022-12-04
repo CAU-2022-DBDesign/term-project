@@ -7,8 +7,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Data
-@Embeddable
 public class ItemImgPK implements Serializable {
-    private Long itemId;
-    private Long consumerId;
+    private Long item;
+    private String fileName;
 }
