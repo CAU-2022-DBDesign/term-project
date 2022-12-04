@@ -1,22 +1,22 @@
 package cau.dbd.entity.item;
 
 import cau.dbd.entity.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Promotion extends BaseTimeEntity {
+public class Promotion {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -25,4 +25,15 @@ public class Promotion extends BaseTimeEntity {
 
     //할인 금액
     private int discount;
+
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
+
+    @Builder
+    public Promotion(Item item, int discount, LocalDateTime startAt, LocalDateTime endAt) {
+        this.item = item;
+        this.discount = discount;
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
 }

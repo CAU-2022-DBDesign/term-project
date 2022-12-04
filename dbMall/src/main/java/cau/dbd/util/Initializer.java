@@ -6,11 +6,10 @@ import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;
 import cau.dbd.entity.OrderStatus.Status;
-import cau.dbd.entity.item.Category;
-import cau.dbd.entity.item.Item;
-import cau.dbd.entity.item.ItemImg;
+import cau.dbd.entity.item.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -127,6 +126,25 @@ public class Initializer {
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
+
+            /*--------------- Basket ------------*/
+            Consumer noah = em.createQuery("select c from Consumer c where c.name = 'Noah'",
+                    Consumer.class).getSingleResult();
+            em.persist(Basket.builder().consumer(liam).item(iPhone).quantity(1).build());
+            em.persist(Basket.builder().consumer(noah).item(xm4).quantity(3).build());
+            em.persist(Basket.builder().consumer(noah).item(galaxy).quantity(5).build());
+
+            /*--------------- Promotion ------------*/
+            em.persist(Promotion.builder().item(galaxy).discount(10000)
+                    .startAt(LocalDateTime.of(2022,12,05,00,00))
+                    .endAt(LocalDateTime.of(2022,12,31,00,00))
+                    .build());
+            em.persist(Promotion.builder().item(xm4).discount(100000)
+                    .startAt(LocalDateTime.of(2022,10,05,00,00))
+                    .endAt(LocalDateTime.of(2022,10,06,00,00))
+                    .build());
+
+
 
             tx.commit();
         } catch (Exception e) {
