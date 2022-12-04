@@ -1,5 +1,6 @@
 package cau.dbd.service;
 
+import cau.dbd.entity.Consumer;
 import cau.dbd.entity.Member;
 import cau.dbd.util.MyScanner;
 import java.util.List;
@@ -44,7 +45,7 @@ public class AuthService {
         // 권한에 따라 메뉴 다르게 보여줌
         switch(member.getClass().getSimpleName()) {
             case "Consumer" :
-                consumerService.mainMenu(member);
+                consumerService.mainMenu((Consumer) member);
                 break;
             case "Producer" :
                // ...

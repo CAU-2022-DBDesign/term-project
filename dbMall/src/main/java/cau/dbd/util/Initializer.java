@@ -4,6 +4,8 @@ import cau.dbd.entity.Consumer;
 import cau.dbd.entity.Member.Gender;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
+import cau.dbd.entity.OrderStatus;
+import cau.dbd.entity.OrderStatus.Status;
 import cau.dbd.entity.item.Category;
 import cau.dbd.entity.item.Item;
 import cau.dbd.entity.item.ItemImg;
@@ -17,7 +19,8 @@ import javax.persistence.EntityTransaction;
 public class Initializer {
 
     /**
-     * db 초기화 함수 추가할 데이터는 여기에 작성 요망
+     * db 초기화 함수
+     * 추가할 데이터는 여기에 작성 요망
      */
     public static void initialize(EntityManagerFactory emf) {
         EntityManager em = emf.createEntityManager();
@@ -63,6 +66,7 @@ public class Initializer {
                 em.persist(Category.builder().name((String) data[0]).build());
             }
 
+
             /*--------------- Item ------------*/
             Category electronics = em.createQuery("select c from Category c where c.name = 'Electronics'",
                 Category.class).getSingleResult();
@@ -80,7 +84,7 @@ public class Initializer {
             }
 
 
-            /*--------------- Order ------------*/
+            /*--------------- Order1 ------------*/
             Consumer liam = em.createQuery("select c from Consumer c where c.name = 'Liam'",
                 Consumer.class).getSingleResult();
             Item galaxy = em.createQuery("select i from Item i where i.name = 'Galaxy S22 Ultra'",
@@ -91,6 +95,28 @@ public class Initializer {
             em.persist(order);
             em.persist(OrderItem.builder().item(galaxy).order(order).price(galaxy.getPrice()).quantity(3).build());
             em.persist(OrderItem.builder().item(iPhone).order(order).price(iPhone.getPrice()).quantity(1).build());
+            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order).build());
+            em.persist(OrderStatus.builder().status(Status.SENT).order(order).build());
+            em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order).build());
+
+            /*--------------- Order1 ------------*/
+            Item xm4 = em.createQuery("select i from Item i where i.name = 'Sony WH-1000XM4'",
+                Item.class).getSingleResult();
+            Order order2 = Order.builder().consumer(liam).build();
+            em.persist(order2);
+            em.persist(OrderItem.builder().item(xm4).order(order2).price(xm4.getPrice()).quantity(1).build());
+            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order2).build());
+            em.persist(OrderStatus.builder().status(Status.SENT).order(order2).build());
+            em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order2).build());
+            em.persist(OrderStatus.builder().status(Status.REFUNDED).order(order2).build());
+
+            /*--------------- Order2 ------------*/
+            Order order3 = Order.builder().consumer(liam).build();
+            em.persist(order3);
+            em.persist(OrderItem.builder().item(iPhone).order(order3).price(iPhone.getPrice()).quantity(2).build());
+            em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
+            em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
+            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
 
             /*--------------- ItemImg ------------*/
             em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
