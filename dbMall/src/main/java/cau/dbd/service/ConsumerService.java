@@ -136,12 +136,17 @@ public class ConsumerService {
     /**
        * 장바구니 추가
      * @param consumer
-     * @param itemId
-     * @param quantity
      */
-    private void insertBasket(Consumer consumer, int itemId, int quantity) {
+    private void insertBasket(Consumer consumer) {
 
+        System.out.println("--- add Basket ---");
         EntityManager em = emf.createEntityManager();
+
+        Integer itemSize = em.createQuery("select count(e) from Item e", int.class).getSingleResult();
+        System.out.println("[SYSTEM] Select Item :");
+        int itemId = MyScanner.getIntInRange(1, itemSize);
+        System.out.println("[SYSTEM] How many items do you want to add? :");
+        int quantity = MyScanner.getIntInRange(1, 100);
         Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class)
                 .setParameter("itemId", itemId).getSingleResult();
         Basket basket = Basket.builder().consumer(consumer).item(item).quantity(quantity).build();
