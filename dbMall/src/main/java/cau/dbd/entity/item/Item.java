@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import cau.dbd.entity.BaseTimeEntity;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,13 +28,15 @@ public class Item extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name="categoryId")
+    @NotNull
     private Category category;
 
+    @NotNull
     @Column
     private String name;
 
     @Column
-    private int price;
+    private int price = 0;
 
     @Column
     private int stock = 0;

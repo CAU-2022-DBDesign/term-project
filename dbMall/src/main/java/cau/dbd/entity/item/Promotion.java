@@ -1,6 +1,7 @@
 package cau.dbd.entity.item;
 
 import cau.dbd.entity.BaseTimeEntity;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,11 +22,16 @@ public class Promotion {
 
     @ManyToOne
     @JoinColumn(name = "itemId")
+    @NotNull
     private Item item;
 
     //할인 금액
+    @Column
+    @NotNull
     private int discount;
 
+    @Column
+    @NotNull
     private LocalDateTime startAt;
     private LocalDateTime endAt;
 
