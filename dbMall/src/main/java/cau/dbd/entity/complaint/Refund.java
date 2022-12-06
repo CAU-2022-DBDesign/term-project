@@ -36,11 +36,14 @@ public class Refund extends BaseTimeEntity {
     @Column(name = "refundStatus")
     private RefundAndExchangeStatus status;
 
+    private int quantity;
+
     @Builder
-    public Refund(OrderItem orderItem, RefundAndExchangeReason reason, String refundReasonDetail, RefundAndExchangeStatus status) {
+    public Refund(OrderItem orderItem, RefundAndExchangeReason reason, String refundReasonDetail, RefundAndExchangeStatus status, int quantity) {
         this.orderItem = orderItem;
         this.reason = reason;
         this.refundReasonDetail = refundReasonDetail;
         this.status = status;
+        this.quantity = quantity;
     }
 }

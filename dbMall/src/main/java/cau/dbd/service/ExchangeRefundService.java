@@ -21,8 +21,11 @@ import java.util.List;
  *
  * mainMenu 호출해서 제어 넘겨주시면 서비스 이용 마치
  */
-@AllArgsConstructor
 public class ExchangeRefundService {
+
+    public ExchangeRefundService(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
     private EntityManagerFactory emf;
 
@@ -51,20 +54,19 @@ public class ExchangeRefundService {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
-        List<OrderItem> orderItemList = em.createQuery("select e from OrderItem e inner join e.order o " +
-                        "where o.consumer = :consumer", OrderItem.class)
+
+        List<OrderItem> exchangableOrderItemList = em.createQuery("select e from OrderItem e join e.order o left join Refund r on r.orderItem = e" +
+                        " where o.consumer = :consumer and ((e.quantity -  r.quantity  > 0) or (r IS NULL))", OrderItem.class)
                 .setParameter("consumer", consumer).getResultList();
 
-
-
         int idx = 1;
-        for(OrderItem orderItem : orderItemList) {
+        for(OrderItem orderItem : exchangableOrderItemList) {
             System.out.printf("[%d] orderId: %d, itemName: %s , quantity: %d , orderDate : %s \n",idx++,orderItem.getOrder().getId()
                     ,orderItem.getItem().getName(),orderItem.getQuantity(),orderItem.getOrder().getCreatedAt().toString());
         }
 
         System.out.println("[SYSTEM] Choose exchange item :");
-        int exchangeItemIdx = MyScanner.getIntInRange(1, orderItemList.size()) - 1;
+        int exchangeItemIdx = MyScanner.getIntInRange(1, exchangableOrderItemList.size()) - 1;
 
 
         Arrays.stream(RefundAndExchangeReason.values()).forEach(r -> {
@@ -79,7 +81,7 @@ public class ExchangeRefundService {
         String exchangeReasonDetail = MyScanner.getStringInLength(0,100);
 
 
-        OrderItem targetOrderItem = orderItemList.get(exchangeItemIdx);
+        OrderItem targetOrderItem = exchangableOrderItemList.get(exchangeItemIdx);
 
 
         try {

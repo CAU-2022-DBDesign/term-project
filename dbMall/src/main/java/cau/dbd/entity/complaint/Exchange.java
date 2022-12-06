@@ -35,6 +35,8 @@ public class Exchange extends BaseTimeEntity {
     @Column(name = "exchangeStatus")
     private RefundAndExchangeStatus status;
 
+    private int quantity;
+
     @Builder
     public Exchange(OrderItem orderItem, RefundAndExchangeReason reason, String exchangeReasonDetail, RefundAndExchangeStatus status) {
         this.orderItem = orderItem;
