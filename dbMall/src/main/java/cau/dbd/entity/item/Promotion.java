@@ -25,7 +25,6 @@ public class Promotion {
     @NotNull
     private Item item;
 
-    //할인 금액
     @Column
     @NotNull
     private int discount;
