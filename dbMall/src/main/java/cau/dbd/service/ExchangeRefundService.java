@@ -85,7 +85,7 @@ public class ExchangeRefundService {
         try {
             tx.begin();
 
-            em.persist(Exchange.builder().item(targetOrderItem.getItem()).order(targetOrderItem.getOrder()).reason(r)
+            em.persist(Exchange.builder().orderItem(targetOrderItem).reason(r)
                     .status(RefundAndExchangeStatus.REQUEST).exchangeReasonDetail(exchangeReasonDetail).build());
 
             tx.commit();
@@ -137,7 +137,7 @@ public class ExchangeRefundService {
         try {
             tx.begin();
 
-            em.persist(Refund.builder().item(targetOrderItem.getItem()).order(targetOrderItem.getOrder()).reason(r)
+            em.persist(Refund.builder().orderItem(targetOrderItem).reason(r)
                     .status(RefundAndExchangeStatus.REQUEST).refundReasonDetail(exchangeReasonDetail).build());
 
             tx.commit();
