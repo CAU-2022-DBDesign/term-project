@@ -4,5 +4,5 @@ public enum RefundAndExchangeStatus {
     REQUEST,
     APPROVE,
     REJECT,
-    EXCHANGED
+    COMPLETED
 }

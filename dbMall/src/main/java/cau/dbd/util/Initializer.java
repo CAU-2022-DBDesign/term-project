@@ -6,6 +6,10 @@ import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;
 import cau.dbd.entity.OrderStatus.Status;
+import cau.dbd.entity.complaint.Exchange;
+import cau.dbd.entity.complaint.Refund;
+import cau.dbd.entity.complaint.RefundAndExchangeReason;
+import cau.dbd.entity.complaint.RefundAndExchangeStatus;
 import cau.dbd.entity.item.*;
 
 import java.time.LocalDate;
@@ -143,6 +147,15 @@ public class Initializer {
                     .startAt(LocalDateTime.of(2022,10,05,00,00))
                     .endAt(LocalDateTime.of(2022,10,06,00,00))
                     .build());
+
+            /*--------------- Exchange ------------*/
+            OrderItem orderItem3 = em.createQuery("select e from Order o join o.orderItems e where e.id = 3", OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem3).reason(RefundAndExchangeReason.BAD_PRODUCT).exchangeReasonDetail("Camera Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+
+
+            /*--------------- Refund ------------*/
+            OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5", OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY).refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
 
 
 
