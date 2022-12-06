@@ -38,10 +38,11 @@ public class Exchange extends BaseTimeEntity {
     private int quantity;
 
     @Builder
-    public Exchange(OrderItem orderItem, RefundAndExchangeReason reason, String exchangeReasonDetail, RefundAndExchangeStatus status) {
+    public Exchange(OrderItem orderItem, RefundAndExchangeReason reason, String exchangeReasonDetail, RefundAndExchangeStatus status,int quantity) {
         this.orderItem = orderItem;
         this.reason = reason;
         this.exchangeReasonDetail = exchangeReasonDetail;
         this.status = status;
+        this.quantity = quantity;
     }
 }

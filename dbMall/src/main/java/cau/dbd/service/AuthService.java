@@ -45,6 +45,8 @@ public class AuthService {
         // 권한에 따라 메뉴 다르게 보여줌
         switch(member.getClass().getSimpleName()) {
             case "Consumer" :
+                ExchangeRefundService exchangeRefundService = new ExchangeRefundService(emf);
+                exchangeRefundService.mainMenu((Consumer) member);
                 consumerService.mainMenu((Consumer) member);
                 break;
             case "Producer" :
