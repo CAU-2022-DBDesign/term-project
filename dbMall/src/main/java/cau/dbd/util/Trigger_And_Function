@@ -1,0 +1,56 @@
+create function remain(orderItemId INT)
+    RETURNS INT
+    BEGIN
+        DECLARE diff INT;
+        DECLARE quantity INT;
+        DECLARE return_value INT;
+
+        SET diff = (select oi.quantity - SUM(r.quantity) as remain from refund r join orderitem oi on oi.id = r.orderItemId where r.orderItemId = orderItemId);
+        SET quantity = (select o.quantity from orderitem o where o.id = orderItemId);
+
+        IF diff IS NULL
+            THEN
+                SET return_value = quantity;
+            ELSE
+                SET return_value = diff;
+        end if;
+
+        RETURN return_value;
+    end;
+
+
+
+DELIMITER $$
+CREATE TRIGGER validateExchange
+    BEFORE INSERT on exchange
+    FOR EACH ROW
+    BEGIN
+    DECLARE  remain INT;
+    SET remain = remain(new.orderItemId);
+
+        if NEW.quantity > remain THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Too many quantity for Refund';
+        END IF;
+    end $$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE TRIGGER validateRefund
+    BEFORE INSERT on refund
+    FOR EACH ROW
+    BEGIN
+    DECLARE  remain INT;
+    SET remain = remain(new.orderItemId);
+
+        if NEW.quantity > remain THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Too many quantity for Refund';
+        END IF;
+    end $$
+DELIMITER ;
+
+
+

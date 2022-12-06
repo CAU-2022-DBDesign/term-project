@@ -22,7 +22,7 @@ public class Refund extends BaseTimeEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "orderItem")
+    @JoinColumn(name = "orderItemId")
     private OrderItem orderItem;
 
     //private Delivery delivery;

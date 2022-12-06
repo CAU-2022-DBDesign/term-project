@@ -21,7 +21,7 @@ public class Exchange extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "orderItem")
+    @JoinColumn(name = "orderItemId")
     private OrderItem orderItem;
 
     //private Delivery delivery;
