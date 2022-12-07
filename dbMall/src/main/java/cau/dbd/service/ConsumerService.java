@@ -1,6 +1,5 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.members.Consumer;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;
@@ -10,6 +9,7 @@ import cau.dbd.entity.Payment.Method;
 import cau.dbd.entity.item.Basket;
 import cau.dbd.entity.item.Item;
 import cau.dbd.entity.item.ItemImg;
+import cau.dbd.entity.members.Consumer;
 import cau.dbd.util.MyScanner;
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +75,14 @@ public class ConsumerService {
             .setParameter("id", orderId).getResultList();
 
         orderStatuses.forEach(orderStatus -> {
-            System.out.printf("\t%s (%s) %n", orderStatus.getStatus().name(), orderStatus.getCreatedAt());
+            System.out.printf("\t%s (%s)", orderStatus.getStatus().name(), orderStatus.getCreatedAt());
+            if (orderStatus.getStatus().equals(Status.PURCHASED)) {
+                Payment payment = em.createQuery("select e from Payment e where e.orderStatus.id = :id ",
+                        Payment.class)
+                    .setParameter("id", orderStatus.getId()).getSingleResult();
+                System.out.printf(" - %s/%d(₩)", payment.getMethod(), payment.getPrice());
+            }
+            System.out.println();
         });
 
         em.close();
@@ -137,7 +144,8 @@ public class ConsumerService {
     }
 
     /**
-       * 장바구니 추가
+     * 장바구니 추가
+     *
      * @param consumer
      */
     private void insertBasket(Consumer consumer) {
@@ -151,7 +159,7 @@ public class ConsumerService {
         System.out.println("[SYSTEM] How many items do you want to add? :");
         int quantity = MyScanner.getIntInRange(1, 100);
         Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class)
-                .setParameter("itemId", itemId).getSingleResult();
+            .setParameter("itemId", itemId).getSingleResult();
         Basket basket = Basket.builder().consumer(consumer).item(item).quantity(quantity).build();
         em.persist(basket);
         em.close();
@@ -162,19 +170,19 @@ public class ConsumerService {
         System.out.println("-- Show Item Information --");
         EntityManager em = emf.createEntityManager();
         Item item = em.createQuery("select e from Item e where e.id = :itemId", Item.class)
-                .setParameter("itemId", itemId).getSingleResult();
+            .setParameter("itemId", itemId).getSingleResult();
 
         List<ItemImg> itemImg = em.createQuery("select e from ItemImg e  where e.item = :item", ItemImg.class)
-                .setParameter("item", item).getResultList();
+            .setParameter("item", item).getResultList();
 
-        System.out.println(">> Item Name : "+item.getName());
-        System.out.println(">> Item Category : "+item.getCategory());
-        System.out.println(">> Item Price : "+item.getPrice());
-        System.out.println(">> Item Stock : "+item.getStock());
-        System.out.println(">> Item Description : "+item.getDescription());
+        System.out.println(">> Item Name : " + item.getName());
+        System.out.println(">> Item Category : " + item.getCategory());
+        System.out.println(">> Item Price : " + item.getPrice());
+        System.out.println(">> Item Stock : " + item.getStock());
+        System.out.println(">> Item Description : " + item.getDescription());
 
         for (ItemImg img : itemImg) {
-            System.out.println(">> Item Img Filename : "+img.getFileName());
+            System.out.println(">> Item Img Filename : " + img.getFileName());
         }
 
 

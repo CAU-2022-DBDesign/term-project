@@ -1,20 +1,28 @@
 package cau.dbd.util;
 
-import cau.dbd.entity.members.Consumer;
-import cau.dbd.entity.members.Member.Gender;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;
 import cau.dbd.entity.OrderStatus.Status;
+import cau.dbd.entity.Payment;
+import cau.dbd.entity.Payment.Method;
 import cau.dbd.entity.complaint.Exchange;
 import cau.dbd.entity.complaint.Refund;
 import cau.dbd.entity.complaint.RefundAndExchangeReason;
 import cau.dbd.entity.complaint.RefundAndExchangeStatus;
-import cau.dbd.entity.item.*;
-
+import cau.dbd.entity.item.Basket;
+import cau.dbd.entity.item.Category;
+import cau.dbd.entity.item.Item;
+import cau.dbd.entity.item.ItemImg;
+import cau.dbd.entity.item.Promotion;
+import cau.dbd.entity.members.Consumer;
+import cau.dbd.entity.members.Member.Gender;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -22,8 +30,7 @@ import javax.persistence.EntityTransaction;
 public class Initializer {
 
     /**
-     * db 초기화 함수
-     * 추가할 데이터는 여기에 작성 요망
+     * db 초기화 함수 추가할 데이터는 여기에 작성 요망
      */
     public static void initialize(EntityManagerFactory emf) {
         EntityManager em = emf.createEntityManager();
@@ -56,11 +63,11 @@ public class Initializer {
                     .gender((Gender) data[2]).build());
             }
 
-            Consumer noah = em.createQuery("select e from Consumer e where e.name = 'Noah'",Consumer.class)
-                    .getSingleResult();
+            Consumer noah = em.createQuery("select e from Consumer e where e.name = 'Noah'", Consumer.class)
+                .getSingleResult();
 
-            Consumer oliver = em.createQuery("select e from Consumer e where e.name = 'Oliver'",Consumer.class)
-                    .getSingleResult();
+            Consumer oliver = em.createQuery("select e from Consumer e where e.name = 'Oliver'", Consumer.class)
+                .getSingleResult();
 
 
             /*--------------- Category ------------*/
@@ -70,11 +77,11 @@ public class Initializer {
                 {"Drugstore"},
                 {"Clothing"},
                 {"Sports"},
-                    {"Office Supplies"},
-                    {"Household Goods"},
-                    {"Beauty"},
-                    {"Kitchen Utensils"},
-                    {"Vehicle Supplies"}
+                {"Office Supplies"},
+                {"Household Goods"},
+                {"Beauty"},
+                {"Kitchen Utensils"},
+                {"Vehicle Supplies"}
             };
             for (Object[] data : categoryData) {
                 em.persist(Category.builder().name((String) data[0]).build());
@@ -98,85 +105,92 @@ public class Initializer {
             }
 
             Category foods = em.createQuery("select c from Category c where c.name = 'Food'",
-                    Category.class).getSingleResult();
+                Category.class).getSingleResult();
 
             Object[][] foodItemData = {
-                    {"Can Cooker Par-Tee Cracker", 120000, 399,
-                            "Can Cooker Par-Tee Cracker with Seasoning Chili Lime"},
-                    {"Grain Crunch Cereal ", 25000, 7, "Nutrient Survival Freeze Dried Chocolate Grain Crunch Cereal"},
-                    {"Jack Link's Beef Jerky", 80000, 35,
-                            "Teriyaki - Flavorful Meat Snack for Lunches, Ready to Eat, Great Stocking Stuffers"},
-                    {"Macaroni and Cheese Cups", 250000, 188, "Velveeta Shells & Cheese Original Microwavable Macaroni and Cheese Cups, Thanksgiving and Christmas Dinner"},
+                {"Can Cooker Par-Tee Cracker", 120000, 399,
+                    "Can Cooker Par-Tee Cracker with Seasoning Chili Lime"},
+                {"Grain Crunch Cereal ", 25000, 7, "Nutrient Survival Freeze Dried Chocolate Grain Crunch Cereal"},
+                {"Jack Link's Beef Jerky", 80000, 35,
+                    "Teriyaki - Flavorful Meat Snack for Lunches, Ready to Eat, Great Stocking Stuffers"},
+                {"Macaroni and Cheese Cups", 250000, 188,
+                    "Velveeta Shells & Cheese Original Microwavable Macaroni and Cheese Cups, Thanksgiving and Christmas Dinner"},
             };
 
             for (Object[] data : foodItemData) {
                 em.persist(Item.builder().name((String) data[0]).category(foods).price((int) data[1])
-                        .stock((int) data[2]).description((String) data[3]).build());
+                    .stock((int) data[2]).description((String) data[3]).build());
             }
 
-            Category sports = em.createQuery("select c from Category c where c.name = 'Sports'",Category.class).getSingleResult();
+            Category sports = em.createQuery("select c from Category c where c.name = 'Sports'", Category.class)
+                .getSingleResult();
 
             Object[][] sportsItemData = {
-                    {"Franklin Sports Junior Football - Grip-Rite 100", 58000, 40,
-                            "DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface"},
-                    {"Nike Everyday Cushion Crew Socks", 22000, 99, "CREW SOCKS: Nike crew socks have a crew silhouette providing a comfortable fit around the calf that won't slip during workouts."},
-                    {"Nike Swoosh Headband", 9900, 50,
-                            "Embroidered SWOOSH logo for visible brand recognition"},
-                    {"Refillable Plastic Sport Water Bottle", 26000, 222, "Ounce and milliliter markings."},
+                {"Franklin Sports Junior Football - Grip-Rite 100", 58000, 40,
+                    "DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface"},
+                {"Nike Everyday Cushion Crew Socks", 22000, 99,
+                    "CREW SOCKS: Nike crew socks have a crew silhouette providing a comfortable fit around the calf that won't slip during workouts."},
+                {"Nike Swoosh Headband", 9900, 50,
+                    "Embroidered SWOOSH logo for visible brand recognition"},
+                {"Refillable Plastic Sport Water Bottle", 26000, 222, "Ounce and milliliter markings."},
             };
 
             for (Object[] data : sportsItemData) {
                 em.persist(Item.builder().name((String) data[0]).category(sports).price((int) data[1])
-                        .stock((int) data[2]).description((String) data[3]).build());
+                    .stock((int) data[2]).description((String) data[3]).build());
             }
 
 
 
-            /*--------------- Order1 ------------*/
+            /*--------------- Orders ------------*/
             Consumer liam = em.createQuery("select c from Consumer c where c.name = 'Liam'",
                 Consumer.class).getSingleResult();
             Item galaxy = em.createQuery("select i from Item i where i.name = 'Galaxy S22 Ultra'",
                 Item.class).getSingleResult();
             Item iPhone = em.createQuery("select i from Item i where i.name = 'iPhone 14 Pro Max'",
                 Item.class).getSingleResult();
-            Order order = Order.builder().consumer(liam).build();
-            em.persist(order);
-            em.persist(OrderItem.builder().item(galaxy).order(order).price(galaxy.getPrice()).quantity(3).build());
-            em.persist(OrderItem.builder().item(iPhone).order(order).price(iPhone.getPrice()).quantity(1).build());
-            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order).build());
-            em.persist(OrderStatus.builder().status(Status.SENT).order(order).build());
-            em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order).build());
-
-            /*--------------- Order2 ------------*/
             Item xm4 = em.createQuery("select i from Item i where i.name = 'Sony WH-1000XM4'",
                 Item.class).getSingleResult();
-            Order order2 = Order.builder().consumer(liam).build();
-            em.persist(order2);
-            em.persist(OrderItem.builder().item(xm4).order(order2).price(xm4.getPrice()).quantity(1).build());
-            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order2).build());
-            em.persist(OrderStatus.builder().status(Status.SENT).order(order2).build());
-            em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order2).build());
-            em.persist(OrderStatus.builder().status(Status.REFUNDED).order(order2).build());
 
-            /*--------------- Order3 ------------*/
-            Order order3 = Order.builder().consumer(liam).build();
-            em.persist(order3);
-            em.persist(OrderItem.builder().item(iPhone).order(order3).price(iPhone.getPrice()).quantity(2).build());
-            em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
-            em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
-            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
+            List<Item> items = em.createQuery("select i from Item i",
+                Item.class).getResultList();
+            for (int i = 1; i <= 15; i++) {
+                Order odr = Order.builder().consumer(liam).build();
+                em.persist(odr);
+                List<Item> randItems = new Random().ints(new Random().nextInt(5) + 1, 0, items.size())
+                    .mapToObj(items::get).collect(Collectors.toList());
+                int totalPrice = 0;
+                for (Item item : randItems) {
+                    em.persist(OrderItem.builder().item(item).order(odr).price(item.getPrice())
+                        .quantity(new Random().nextInt(4) + 1).build());
+                    totalPrice += item.getPrice();
+                }
+                if (i % 6 == 0) {
+                    em.persist(OrderStatus.builder().status(Status.CANCELED).order(odr).build());
+                } else {
+                    OrderStatus purchasedStatus = OrderStatus.builder().status(Status.PURCHASED)
+                        .order(odr).build();
+                    em.persist(purchasedStatus);
 
-            /*--------------- Order4 ------------*/
-            Order order4 = Order.builder().consumer(liam).build();
-            em.persist(order3);
-            em.persist(OrderItem.builder().item(iPhone).order(order3).price(iPhone.getPrice()).quantity(2).build());
-            em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
-            em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
-            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
+                    em.persist(Payment.builder().orderStatus(purchasedStatus)
+                        .method(Method.values()[(int) (Math.random() * Method.values().length)]).price(totalPrice)
+                        .build());
 
-
-
-
+                    em.persist(OrderStatus.builder().status(Status.RECEIVED)
+                        .order(odr).build());
+                    switch (new Random().nextInt(3)) {
+                        case 2:
+                            em.persist(OrderStatus.builder().status(Status.REFUNDED)
+                                .order(odr).build());
+                            break;
+                        case 3:
+                            em.persist(OrderStatus.builder().status(Status.EXCHANGED)
+                                .order(odr).build());
+                            break;
+                    }
+                }
+            }
+            
 
             /*--------------- ItemImg ------------*/
             em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
@@ -199,24 +213,26 @@ public class Initializer {
 
             /*--------------- Promotion ------------*/
             em.persist(Promotion.builder().item(galaxy).discount(10000)
-                    .startAt(LocalDateTime.of(2022,12,05,00,00))
-                    .endAt(LocalDateTime.of(2022,12,31,00,00))
-                    .build());
+                .startAt(LocalDateTime.of(2022, 12, 05, 00, 00))
+                .endAt(LocalDateTime.of(2022, 12, 31, 00, 00))
+                .build());
             em.persist(Promotion.builder().item(xm4).discount(100000)
-                    .startAt(LocalDateTime.of(2022,10,05,00,00))
-                    .endAt(LocalDateTime.of(2022,10,06,00,00))
-                    .build());
+                .startAt(LocalDateTime.of(2022, 10, 05, 00, 00))
+                .endAt(LocalDateTime.of(2022, 10, 06, 00, 00))
+                .build());
 
             /*--------------- Exchange ------------*/
-            OrderItem orderItem3 = em.createQuery("select e from Order o join o.orderItems e where e.id = 3", OrderItem.class).getSingleResult();
-            em.persist(Exchange.builder().orderItem(orderItem3).reason(RefundAndExchangeReason.BAD_PRODUCT).exchangeReasonDetail("Camera Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+            OrderItem orderItem3 = em.createQuery("select e from Order o join o.orderItems e where e.id = 3",
+                OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem3).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                .exchangeReasonDetail("Camera Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
 
 
             /*--------------- Refund ------------*/
-            OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5", OrderItem.class).getSingleResult();
-            em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY).refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
-
-
+            OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5",
+                OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                .refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
 
             tx.commit();
         } catch (Exception e) {
