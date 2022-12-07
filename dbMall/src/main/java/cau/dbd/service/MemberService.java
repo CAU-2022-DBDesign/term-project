@@ -1,13 +1,11 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.Consumer;
-import cau.dbd.entity.Member;
+import cau.dbd.entity.member.Consumer;
 import cau.dbd.entity.Member.Gender;
 import cau.dbd.util.MyScanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;

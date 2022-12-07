@@ -1,9 +1,11 @@
-package cau.dbd.entity;
+package cau.dbd.entity.member;
 
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
+import cau.dbd.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @DiscriminatorValue("Consumer")
-public class Consumer extends Member{
+public class Consumer extends Member {
 
     @Column
     private String test;

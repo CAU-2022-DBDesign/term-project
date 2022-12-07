@@ -1,6 +1,6 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.Consumer;
+import cau.dbd.entity.member.Consumer;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;
@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import lombok.AllArgsConstructor;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
 @AllArgsConstructor
 public class ConsumerService {

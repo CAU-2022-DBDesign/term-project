@@ -1,6 +1,6 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.Consumer;
+import cau.dbd.entity.member.Consumer;
 import cau.dbd.entity.Member;
 import cau.dbd.util.MyScanner;
 import java.util.List;

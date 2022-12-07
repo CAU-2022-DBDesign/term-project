@@ -1,16 +1,14 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.Consumer;
+import cau.dbd.entity.member.Consumer;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.complaint.*;
 import cau.dbd.util.MyScanner;
-import lombok.AllArgsConstructor;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

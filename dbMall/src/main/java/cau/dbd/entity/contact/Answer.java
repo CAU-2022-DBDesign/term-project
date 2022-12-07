@@ -1,7 +1,6 @@
 package cau.dbd.entity.contact;
 
 import cau.dbd.entity.BaseTimeEntity;
-import cau.dbd.entity.Manager;
 import lombok.Builder;
 
 import javax.persistence.*;

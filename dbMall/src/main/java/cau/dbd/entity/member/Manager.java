@@ -1,8 +1,9 @@
-package cau.dbd.entity;
+package cau.dbd.entity.member;
 
 import java.time.LocalDate;
 import javax.persistence.*;
 
+import cau.dbd.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @DiscriminatorValue("Manager")
-public class Manager extends Member{
+public class Manager extends Member {
 
     @Enumerated(EnumType.STRING)
     @Column

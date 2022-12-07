@@ -1,7 +1,6 @@
 package cau.dbd.entity.item;
 
 
-import cau.dbd.entity.Consumer;
 import lombok.*;
 
 import javax.persistence.*;
