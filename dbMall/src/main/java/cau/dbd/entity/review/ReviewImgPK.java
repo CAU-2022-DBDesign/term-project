@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 @Embeddable
 public class ReviewImgPK implements Serializable {
-    private Long reviewId;
+    private Long review;
     private String fileName;
 }
