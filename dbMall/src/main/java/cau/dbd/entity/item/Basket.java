@@ -1,12 +1,12 @@
 package cau.dbd.entity.item;
 
-import cau.dbd.entity.members.Consumer;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+        import cau.dbd.entity.members.Consumer;
+        import lombok.Builder;
+        import lombok.Getter;
+        import lombok.NoArgsConstructor;
+        import lombok.Setter;
 
-import javax.persistence.*;
+        import javax.persistence.*;
 
 @Entity
 @Getter

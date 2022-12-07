@@ -56,6 +56,12 @@ public class Initializer {
                     .gender((Gender) data[2]).build());
             }
 
+            Consumer noah = em.createQuery("select e from Consumer e where e.name = 'Noah'",Consumer.class)
+                    .getSingleResult();
+
+            Consumer oliver = em.createQuery("select e from Consumer e where e.name = 'Oliver'",Consumer.class)
+                    .getSingleResult();
+
 
             /*--------------- Category ------------*/
             Object[][] categoryData = {
@@ -64,7 +70,11 @@ public class Initializer {
                 {"Drugstore"},
                 {"Clothing"},
                 {"Sports"},
-                    {""}
+                    {"Office Supplies"},
+                    {"Household Goods"},
+                    {"Beauty"},
+                    {"Kitchen Utensils"},
+                    {"Vehicle Supplies"}
             };
             for (Object[] data : categoryData) {
                 em.persist(Category.builder().name((String) data[0]).build());
@@ -87,6 +97,40 @@ public class Initializer {
                     .stock((int) data[2]).description((String) data[3]).build());
             }
 
+            Category foods = em.createQuery("select c from Category c where c.name = 'Food'",
+                    Category.class).getSingleResult();
+
+            Object[][] foodItemData = {
+                    {"Can Cooker Par-Tee Cracker", 120000, 399,
+                            "Can Cooker Par-Tee Cracker with Seasoning Chili Lime"},
+                    {"Grain Crunch Cereal ", 25000, 7, "Nutrient Survival Freeze Dried Chocolate Grain Crunch Cereal"},
+                    {"Jack Link's Beef Jerky", 80000, 35,
+                            "Teriyaki - Flavorful Meat Snack for Lunches, Ready to Eat, Great Stocking Stuffers"},
+                    {"Macaroni and Cheese Cups", 250000, 188, "Velveeta Shells & Cheese Original Microwavable Macaroni and Cheese Cups, Thanksgiving and Christmas Dinner"},
+            };
+
+            for (Object[] data : foodItemData) {
+                em.persist(Item.builder().name((String) data[0]).category(foods).price((int) data[1])
+                        .stock((int) data[2]).description((String) data[3]).build());
+            }
+
+            Category sports = em.createQuery("select c from Category c where c.name = 'Sports'",Category.class).getSingleResult();
+
+            Object[][] sportsItemData = {
+                    {"Franklin Sports Junior Football - Grip-Rite 100", 58000, 40,
+                            "DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface"},
+                    {"Nike Everyday Cushion Crew Socks", 22000, 99, "CREW SOCKS: Nike crew socks have a crew silhouette providing a comfortable fit around the calf that won't slip during workouts."},
+                    {"Nike Swoosh Headband", 9900, 50,
+                            "Embroidered SWOOSH logo for visible brand recognition"},
+                    {"Refillable Plastic Sport Water Bottle", 26000, 222, "Ounce and milliliter markings."},
+            };
+
+            for (Object[] data : sportsItemData) {
+                em.persist(Item.builder().name((String) data[0]).category(sports).price((int) data[1])
+                        .stock((int) data[2]).description((String) data[3]).build());
+            }
+
+
 
             /*--------------- Order1 ------------*/
             Consumer liam = em.createQuery("select c from Consumer c where c.name = 'Liam'",
@@ -103,7 +147,7 @@ public class Initializer {
             em.persist(OrderStatus.builder().status(Status.SENT).order(order).build());
             em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order).build());
 
-            /*--------------- Order1 ------------*/
+            /*--------------- Order2 ------------*/
             Item xm4 = em.createQuery("select i from Item i where i.name = 'Sony WH-1000XM4'",
                 Item.class).getSingleResult();
             Order order2 = Order.builder().consumer(liam).build();
@@ -114,13 +158,25 @@ public class Initializer {
             em.persist(OrderStatus.builder().status(Status.RECEIVED).order(order2).build());
             em.persist(OrderStatus.builder().status(Status.REFUNDED).order(order2).build());
 
-            /*--------------- Order2 ------------*/
+            /*--------------- Order3 ------------*/
             Order order3 = Order.builder().consumer(liam).build();
             em.persist(order3);
             em.persist(OrderItem.builder().item(iPhone).order(order3).price(iPhone.getPrice()).quantity(2).build());
             em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
             em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
             em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
+
+            /*--------------- Order4 ------------*/
+            Order order4 = Order.builder().consumer(liam).build();
+            em.persist(order3);
+            em.persist(OrderItem.builder().item(iPhone).order(order3).price(iPhone.getPrice()).quantity(2).build());
+            em.persist(OrderItem.builder().item(xm4).order(order3).price(xm4.getPrice()).quantity(1).build());
+            em.persist(OrderItem.builder().item(galaxy).order(order3).price(galaxy.getPrice()).quantity(3).build());
+            em.persist(OrderStatus.builder().status(Status.PURCHASED).order(order3).build());
+
+
+
+
 
             /*--------------- ItemImg ------------*/
             em.persist(ItemImg.builder().item(galaxy).fileName(UUID.randomUUID().toString()).build());
@@ -137,8 +193,6 @@ public class Initializer {
             em.persist(ItemImg.builder().item(xm4).fileName(UUID.randomUUID().toString()).build());
 
             /*--------------- Basket ------------*/
-            Consumer noah = em.createQuery("select c from Consumer c where c.name = 'Noah'",
-                    Consumer.class).getSingleResult();
             em.persist(Basket.builder().consumer(liam).item(iPhone).quantity(1).build());
             em.persist(Basket.builder().consumer(noah).item(xm4).quantity(3).build());
             em.persist(Basket.builder().consumer(noah).item(galaxy).quantity(5).build());
