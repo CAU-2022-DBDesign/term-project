@@ -1,4 +1,4 @@
-package cau.dbd.entity.contact;
+package cau.dbd.entity.contacts;
 
 import cau.dbd.entity.BaseTimeEntity;
 import cau.dbd.entity.members.Consumer;

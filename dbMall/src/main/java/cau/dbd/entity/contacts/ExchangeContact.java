@@ -1,4 +1,4 @@
-package cau.dbd.entity.contact;
+package cau.dbd.entity.contacts;
 
 public class ExchangeContact {
 }
