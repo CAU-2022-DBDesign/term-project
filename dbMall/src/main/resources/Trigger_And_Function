@@ -30,7 +30,7 @@ CREATE TRIGGER validateExchange
 
         if NEW.quantity > remain THEN
             SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Too many quantity for Refund';
+            SET MESSAGE_TEXT = 'Too many quantity for Exchange';
         END IF;
     end $$
 DELIMITER ;
