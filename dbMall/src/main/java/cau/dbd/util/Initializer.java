@@ -68,7 +68,11 @@ public class Initializer {
 
             Consumer oliver = em.createQuery("select e from Consumer e where e.name = 'Oliver'", Consumer.class)
                 .getSingleResult();
+            Consumer william = em.createQuery("select e from Consumer e where e.name = 'William'", Consumer.class)
+                    .getSingleResult();
 
+            Consumer elijah = em.createQuery("select e from Consumer e where e.name = ' Elijah'", Consumer.class)
+                    .getSingleResult();
 
             /*--------------- Category ------------*/
             Object[][] categoryData = {
@@ -110,7 +114,7 @@ public class Initializer {
             Object[][] foodItemData = {
                 {"Can Cooker Par-Tee Cracker", 120000, 399,
                     "Can Cooker Par-Tee Cracker with Seasoning Chili Lime"},
-                {"Grain Crunch Cereal ", 25000, 7, "Nutrient Survival Freeze Dried Chocolate Grain Crunch Cereal"},
+                {"Grain Crunch Cereal", 25000, 7, "Nutrient Survival Freeze Dried Chocolate Grain Crunch Cereal"},
                 {"Jack Link's Beef Jerky", 80000, 35,
                     "Teriyaki - Flavorful Meat Snack for Lunches, Ready to Eat, Great Stocking Stuffers"},
                 {"Macaroni and Cheese Cups", 250000, 188,
@@ -126,13 +130,13 @@ public class Initializer {
                 .getSingleResult();
 
             Object[][] sportsItemData = {
-                {"Franklin Sports Junior Football - Grip-Rite 100", 58000, 40,
+                {"Franklin Football - Grip-Rite 100", 58000, 40,
                     "DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface"},
                 {"Nike Everyday Cushion Crew Socks", 22000, 99,
                     "CREW SOCKS: Nike crew socks have a crew silhouette providing a comfortable fit around the calf that won't slip during workouts."},
                 {"Nike Swoosh Headband", 9900, 50,
                     "Embroidered SWOOSH logo for visible brand recognition"},
-                {"Refillable Plastic Sport Water Bottle", 26000, 222, "Ounce and milliliter markings."},
+                {"Plastic Sport Water Bottle", 26000, 222, "Ounce and milliliter markings."},
             };
 
             for (Object[] data : sportsItemData) {
@@ -140,7 +144,9 @@ public class Initializer {
                     .stock((int) data[2]).description((String) data[3]).build());
             }
 
-
+            Item cracker = em.createQuery("select e from Item e where e.name = 'Can Cooker Par-Tee Cracker'", Item.class).getSingleResult();
+            Item bottle = em.createQuery("select e from Item e where e.name = 'Plastic Sport Water Bottle'", Item.class).getSingleResult();
+            Item cereal = em.createQuery("select e from Item e where e.name = 'Grain Crunch Cereal'", Item.class).getSingleResult();
 
             /*--------------- Orders ------------*/
             Consumer liam = em.createQuery("select c from Consumer c where c.name = 'Liam'",
@@ -208,8 +214,16 @@ public class Initializer {
 
             /*--------------- Basket ------------*/
             em.persist(Basket.builder().consumer(liam).item(iPhone).quantity(1).build());
+            em.persist(Basket.builder().consumer(liam).item(cereal).quantity(5).build());
             em.persist(Basket.builder().consumer(noah).item(xm4).quantity(3).build());
             em.persist(Basket.builder().consumer(noah).item(galaxy).quantity(5).build());
+            em.persist(Basket.builder().consumer(oliver).item(cereal).quantity(3).build());
+            em.persist(Basket.builder().consumer(oliver).item(bottle).quantity(5).build());
+            em.persist(Basket.builder().consumer(william).item(bottle).quantity(1).build());
+            em.persist(Basket.builder().consumer(william).item(cracker).quantity(2).build());
+            em.persist(Basket.builder().consumer(elijah).item(cracker).quantity(2).build());
+            em.persist(Basket.builder().consumer(elijah).item(iPhone).quantity(1).build());
+
 
             /*--------------- Promotion ------------*/
             em.persist(Promotion.builder().item(galaxy).discount(10000)
@@ -225,14 +239,14 @@ public class Initializer {
             OrderItem orderItem3 = em.createQuery("select e from Order o join o.orderItems e where e.id = 3",
                 OrderItem.class).getSingleResult();
             em.persist(Exchange.builder().orderItem(orderItem3).reason(RefundAndExchangeReason.BAD_PRODUCT)
-                .exchangeReasonDetail("Camera Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+                .exchangeReasonDetail("Item Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
 
 
             /*--------------- Refund ------------*/
             OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5",
                 OrderItem.class).getSingleResult();
             em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY)
-                .refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
+                .refundReasonDetail("TOO LATE!!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
 
             tx.commit();
         } catch (Exception e) {

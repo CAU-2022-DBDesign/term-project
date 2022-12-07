@@ -91,7 +91,7 @@ public class ExchangeRefundService {
 
 
         //교환 취소할 건 입력받기
-        System.out.println("[SYSTEM] Choose exchange item (0:quit):");
+        System.out.println("[SYSTEM] Choose refund item (0:quit):");
         int cancelRefundIdx = MyScanner.getIntInRange(0, refundDTOList.size()) - 1;
 
         //zero to quit
@@ -211,7 +211,7 @@ public class ExchangeRefundService {
 
         //Choosing target Item
         exchangableOrderItemList.stream().forEach(orderItem ->  {
-            System.out.printf("[%d] orderId: %d, itemName: %18s , quantity: %d , orderDate : %s \n",indexHolder.getAndIncrement(),orderItem.getOrder().getId()
+            System.out.printf("[%-2d] orderId: %-2d, itemName: %-35s , quantity: %d , orderDate : %s \n",indexHolder.getAndIncrement(),orderItem.getOrder().getId()
                     ,orderItem.getItem().getName(),orderItem.getQuantity(),orderItem.getOrder().getCreatedAt().toString());
         });
 
@@ -289,7 +289,7 @@ public class ExchangeRefundService {
 
         //Choosing target Item
         refundableOrderItemList.stream().forEach(orderItem ->  {
-            System.out.printf("[%d] orderId: %d, itemName: %18s , quantity: %d , orderDate : %s \n",indexHolder.getAndIncrement(),orderItem.getOrder().getId()
+            System.out.printf("[%-2d] orderId: %-2d, itemName: %-35s , quantity: %d , orderDate : %s \n",indexHolder.getAndIncrement(),orderItem.getOrder().getId()
                     ,orderItem.getItem().getName(),orderItem.getQuantity(),orderItem.getOrder().getCreatedAt().toString());
         });
 
