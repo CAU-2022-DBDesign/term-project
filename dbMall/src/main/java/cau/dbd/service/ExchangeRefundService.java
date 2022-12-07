@@ -79,7 +79,7 @@ public class ExchangeRefundService {
 
         // exchange request quantity
         System.out.println("[SYSTEM] Enter the quantity to exchange (0:quit):");
-        int exchangeRequestQuantity = MyScanner.getIntInRange(0, exchangableOrderItemList.size());
+        int exchangeRequestQuantity = MyScanner.getIntInRange(0, exchangableOrderItemList.get(exchangeItemIdx).getQuantity());
 
         //zero to quit
         if(exchangeRequestQuantity == 0)
@@ -117,6 +117,7 @@ public class ExchangeRefundService {
 
             tx.commit();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             tx.rollback();
         } finally {
             em.close();
@@ -158,7 +159,7 @@ public class ExchangeRefundService {
 
         // refund request quantity
         System.out.println("[SYSTEM] Enter the quantity to refund (0:quit):");
-        int refundRequestQuantity = MyScanner.getIntInRange(0, refundableOrderItemList.size());
+        int refundRequestQuantity = MyScanner.getIntInRange(0, refundableOrderItemList.get(refundItemIdx).getQuantity());
 
         //zero to quit
         if(refundRequestQuantity == 0)

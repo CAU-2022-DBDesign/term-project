@@ -3,6 +3,7 @@ package cau.dbd.entity.complaint;
 import cau.dbd.entity.BaseTimeEntity;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
+import cau.dbd.entity.delivery.Delivery;
 import cau.dbd.entity.item.Item;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,9 @@ public class Exchange extends BaseTimeEntity {
     @JoinColumn(name = "orderItemId")
     private OrderItem orderItem;
 
-    //private Delivery delivery;
+    @OneToOne
+    @JoinColumn(name = "deliveryId")
+    private Delivery delivery;
 
     @Column(name = "exchangeReason")
     private RefundAndExchangeReason reason;

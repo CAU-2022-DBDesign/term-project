@@ -32,7 +32,7 @@ public class ConsumerService {
     public void mainMenu(Consumer consumer) {
         while (true) {
             System.out.printf("\n******Consumer Menu - %s *******\n\n", consumer.getName());
-            System.out.print("[SYSTEM] 1: See all orders / 2: Make order / 3:Sign out : ");
+            System.out.print("[SYSTEM] 1: See all orders / 2: Make order / 3: Exchange&Refund Service / 4:Sign out : ");
             switch (MyScanner.getIntInRange(1, 3)) {
                 case 1:
                     selectAllOrder(consumer);
@@ -41,6 +41,10 @@ public class ConsumerService {
                     makeOrder(consumer);
                     break;
                 case 3:
+                    ExchangeRefundService exchangeRefundService = new ExchangeRefundService(emf);
+                    exchangeRefundService.mainMenu(consumer);
+                    break;
+                case 4:
                     return;
             }
         }
