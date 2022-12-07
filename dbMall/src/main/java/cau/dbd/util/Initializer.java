@@ -64,6 +64,7 @@ public class Initializer {
                 {"Drugstore"},
                 {"Clothing"},
                 {"Sports"},
+                    {""}
             };
             for (Object[] data : categoryData) {
                 em.persist(Category.builder().name((String) data[0]).build());
@@ -130,6 +131,10 @@ public class Initializer {
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
             em.persist(ItemImg.builder().item(iPhone).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(xm4).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(xm4).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(xm4).fileName(UUID.randomUUID().toString()).build());
+            em.persist(ItemImg.builder().item(xm4).fileName(UUID.randomUUID().toString()).build());
 
             /*--------------- Basket ------------*/
             Consumer noah = em.createQuery("select c from Consumer c where c.name = 'Noah'",
@@ -155,7 +160,7 @@ public class Initializer {
 
             /*--------------- Refund ------------*/
             OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5", OrderItem.class).getSingleResult();
-            em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY).refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
+            em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY).refundReasonDetail("TOO LATE!@!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
 
 
 

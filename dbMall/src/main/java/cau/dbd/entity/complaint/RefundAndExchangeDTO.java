@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RefundAndExchangeDTO {
 
+    private Long id;
+
     private Long orderId;
 
     private String itemName;

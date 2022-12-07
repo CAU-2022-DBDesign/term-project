@@ -29,8 +29,10 @@ public class ExchangeRefundService {
     public void mainMenu(Consumer consumer) {
         while (true) {
             System.out.printf("\n******Exchange and Refund Menu - %s *******\n\n", consumer.getName());
-            System.out.print("[SYSTEM] 1: Exchange / 2: Refund / 3: See my progress / 4: quit :");
-            switch (MyScanner.getIntInRange(1, 4)) {
+            System.out.print("[SYSTEM] 0: quit / 1: Exchange / 2: Refund / 3: See my progress / 4: Cancel Exchange / 5.Cancel Refund :");
+            switch (MyScanner.getIntInRange(0, 5)) {
+                case 0:
+                    return;
                 case 1:
                     exchangeRequest(consumer);
                     break;
@@ -41,8 +43,155 @@ public class ExchangeRefundService {
                     showProgress(consumer);
                     break;
                 case 4:
-                    return;
+                    cancelExchange(consumer);
+                    break;
+                case 5:
+                    cancelRefund(consumer);
+
             }
+        }
+    }
+
+    private void cancelRefund(Consumer consumer) {
+
+
+        System.out.println("-- Cancel Refund Service --\n");
+        AtomicInteger indexHolder = new AtomicInteger();
+        indexHolder.set(1);
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+
+        //exchangeList :: only REQUEST status data
+        TypedQuery<RefundAndExchangeDTO> refundList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(e.id, o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.refundReasonDetail,e.quantity,e.status) " +
+                        "from Refund e " +
+                        "join e.orderItem oi " +
+                        "join oi.order o " +
+                        "join o.consumer c " +
+                        "where c.id = :id " +
+                        "and e.status = 0",RefundAndExchangeDTO.class)
+                .setParameter("id",consumer.getId());
+
+        List<RefundAndExchangeDTO> refundDTOList = refundList.getResultList();
+
+        refundDTOList.stream().forEach(m -> {
+            System.out.printf("[%d]\n",indexHolder.getAndIncrement());
+            System.out.printf("       OrderId: %-25d  itemName: %s\n",m.getOrderId(),m.getItemName());
+            System.out.printf("     OrderDate: %-25s  ExchangeDate: %s\n",m.getOrderCreateAt(),m.getRneCreateAt());
+            System.out.printf("ExchangeReason: %-25s  Detail: %s\n",m.getReason(),m.getReasonDetail());
+            System.out.printf("      Quantity: %-25d  Status: %s\n\n",m.getQuantity(),m.getStatus());
+        });
+        indexHolder.set(1);
+        //데이터가 없는 경우
+        if(refundDTOList.isEmpty()) {
+            System.out.println("No Corresponding Data\n");
+            return;
+        }
+
+
+        //교환 취소할 건 입력받기
+        System.out.println("[SYSTEM] Choose exchange item (0:quit):");
+        int cancelRefundIdx = MyScanner.getIntInRange(0, refundDTOList.size()) - 1;
+
+        //zero to quit
+        if(cancelRefundIdx == -1)
+            return;
+
+
+        Long targetExchangeId = refundDTOList.get(cancelRefundIdx).getId();
+
+        Refund targetRefundEntity = em.createQuery("select e from Refund e where e.id = :id", Refund.class)
+                .setParameter("id", targetExchangeId).getSingleResult();
+
+
+        try {
+            tx.begin();
+
+            em.remove(targetRefundEntity);
+
+
+            tx.commit();
+
+            System.out.println("Cancel Refund Completed");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            tx.rollback();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    private void cancelExchange(Consumer consumer) {
+
+        System.out.println("-- Cancel Service --\n");
+        AtomicInteger indexHolder = new AtomicInteger();
+        indexHolder.set(1);
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+
+        //exchangeList :: only REQUEST status data
+        TypedQuery<RefundAndExchangeDTO> exchangeList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(e.id, o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.exchangeReasonDetail,e.quantity,e.status) " +
+                        "from Exchange e " +
+                        "join e.orderItem oi " +
+                        "join oi.order o " +
+                        "join o.consumer c " +
+                        "where c.id = :id " +
+                        "and e.status = 0",RefundAndExchangeDTO.class)
+                .setParameter("id",consumer.getId());
+
+        List<RefundAndExchangeDTO> exchangeDTOList = exchangeList.getResultList();
+
+        exchangeDTOList.stream().forEach(m -> {
+            System.out.printf("[%d]\n",indexHolder.getAndIncrement());
+            System.out.printf("       OrderId: %-25d  itemName: %s\n",m.getOrderId(),m.getItemName());
+            System.out.printf("     OrderDate: %-25s  ExchangeDate: %s\n",m.getOrderCreateAt(),m.getRneCreateAt());
+            System.out.printf("ExchangeReason: %-25s  Detail: %s\n",m.getReason(),m.getReasonDetail());
+            System.out.printf("      Quantity: %-25d  Status: %s\n\n",m.getQuantity(),m.getStatus());
+        });
+        indexHolder.set(1);
+        //데이터가 없는 경우
+        if(exchangeDTOList.isEmpty()) {
+            System.out.println("No Corresponding Data\n");
+            return;
+        }
+
+
+        //교환 취소할 건 입력받기
+        System.out.println("[SYSTEM] Choose exchange item (0:quit):");
+        int cancelExchangeIdx = MyScanner.getIntInRange(0, exchangeDTOList.size()) - 1;
+
+        //zero to quit
+        if(cancelExchangeIdx == -1)
+            return;
+
+
+        Long targetExchangeId = exchangeDTOList.get(cancelExchangeIdx).getId();
+
+        Exchange targetExchangeEntity = em.createQuery("select e from Exchange e where e.id = :id", Exchange.class)
+                .setParameter("id", targetExchangeId).getSingleResult();
+
+
+        try {
+            tx.begin();
+
+            em.remove(targetExchangeEntity);
+
+
+            tx.commit();
+
+            System.out.println("Cancel Exchange Completed");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            tx.rollback();
+
+        } finally {
+            em.close();
         }
     }
 
@@ -114,16 +263,14 @@ public class ExchangeRefundService {
                     .status(RefundAndExchangeStatus.REQUEST).exchangeReasonDetail(exchangeReasonDetail).build());
 
             tx.commit();
+            System.out.println("[SYSTEM] Exchange Request Complete");
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             tx.rollback();
         } finally {
             em.close();
         }
-
-
-
-        System.out.println("[SYSTEM] Exchange Request Complete");
     }
 
     private void refundRequest(Consumer consumer) {
@@ -211,7 +358,7 @@ public class ExchangeRefundService {
         indexHolder.set(1);
 
         System.out.println("-- Exchange Progress --");
-        TypedQuery<RefundAndExchangeDTO> exchangeList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.exchangeReasonDetail,e.quantity,e.status) " +
+        TypedQuery<RefundAndExchangeDTO> exchangeList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(e.id,o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.exchangeReasonDetail,e.quantity,e.status) " +
                         "from Exchange e " +
                         "join e.orderItem oi " +
                         "join oi.order o " +
@@ -236,7 +383,7 @@ public class ExchangeRefundService {
         }
 
         System.out.println("-- Refund Progress --");
-        TypedQuery<RefundAndExchangeDTO> refundList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.refundReasonDetail,e.quantity,e.status) " +
+        TypedQuery<RefundAndExchangeDTO> refundList = em.createQuery("select new cau.dbd.entity.complaint.RefundAndExchangeDTO(e.id,o.id,oi.item.name,o.createdAt,e.createdAt,e.reason,e.refundReasonDetail,e.quantity,e.status) " +
                         "from Refund e " +
                         "join e.orderItem oi " +
                         "join oi.order o " +
