@@ -1,7 +1,7 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.member.Consumer;
-import cau.dbd.entity.Member;
+import cau.dbd.entity.members.Consumer;
+import cau.dbd.entity.members.Member;
 import cau.dbd.util.MyScanner;
 import java.util.List;
 import javax.persistence.EntityManager;

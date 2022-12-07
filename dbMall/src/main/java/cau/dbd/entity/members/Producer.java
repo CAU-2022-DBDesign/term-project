@@ -1,31 +1,27 @@
-package cau.dbd.entity.member;
-
-import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+package cau.dbd.entity.members;
 
 import lombok.Builder;
+
+import java.time.LocalDate;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
-@DiscriminatorValue("Consumer")
-public class Consumer extends Member {
-
-    @Column
-    private String test;
+@DiscriminatorValue("Producer")
+public class Producer extends Member {
 
     @Builder
-    public Consumer(String name, LocalDate birth, Gender gender, String test) {
+    public Producer(String name, LocalDate birth, Member.Gender gender, String test) {
         super(name, birth, gender);
-        this.test = test;
     }
 }
+
+

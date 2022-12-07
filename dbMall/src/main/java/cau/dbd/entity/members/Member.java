@@ -1,4 +1,4 @@
-package cau.dbd.entity.member;
+package cau.dbd.entity.members;
 
 import java.time.LocalDate;
 import javax.persistence.Column;

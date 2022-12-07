@@ -1,7 +1,7 @@
 package cau.dbd.entity.review;
 
 import cau.dbd.entity.BaseTimeEntity;
-import cau.dbd.entity.member.Consumer;
+import cau.dbd.entity.members.Consumer;
 import cau.dbd.entity.item.Item;
 
 import javax.persistence.Column;

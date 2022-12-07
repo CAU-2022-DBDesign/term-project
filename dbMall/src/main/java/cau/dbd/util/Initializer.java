@@ -1,7 +1,7 @@
 package cau.dbd.util;
 
-import cau.dbd.entity.Consumer;
-import cau.dbd.entity.Member.Gender;
+import cau.dbd.entity.members.Consumer;
+import cau.dbd.entity.members.Member.Gender;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;

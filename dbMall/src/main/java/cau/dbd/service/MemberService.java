@@ -1,7 +1,7 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.member.Consumer;
-import cau.dbd.entity.Member.Gender;
+import cau.dbd.entity.members.Consumer;
+import cau.dbd.entity.members.Member.Gender;
 import cau.dbd.util.MyScanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

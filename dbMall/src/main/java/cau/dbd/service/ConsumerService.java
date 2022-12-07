@@ -1,6 +1,6 @@
 package cau.dbd.service;
 
-import cau.dbd.entity.member.Consumer;
+import cau.dbd.entity.members.Consumer;
 import cau.dbd.entity.Order;
 import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.OrderStatus;

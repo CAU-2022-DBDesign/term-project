@@ -1,6 +1,6 @@
 package cau.dbd.entity.item;
 
-import cau.dbd.entity.member.Consumer;
+import cau.dbd.entity.members.Consumer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
