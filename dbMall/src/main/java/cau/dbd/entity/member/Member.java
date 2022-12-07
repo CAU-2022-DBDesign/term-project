@@ -1,4 +1,4 @@
-package cau.dbd.entity;
+package cau.dbd.entity.member;
 
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import cau.dbd.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

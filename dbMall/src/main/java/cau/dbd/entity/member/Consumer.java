@@ -5,7 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import cau.dbd.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +29,3 @@ public class Consumer extends Member {
         this.test = test;
     }
 }
-
-

@@ -3,7 +3,6 @@ package cau.dbd.entity.member;
 import java.time.LocalDate;
 import javax.persistence.*;
 
-import cau.dbd.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
