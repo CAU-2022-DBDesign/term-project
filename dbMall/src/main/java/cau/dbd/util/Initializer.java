@@ -298,10 +298,65 @@ public class Initializer {
 
 
             /*--------------- Refund ------------*/
+            //1
             OrderItem orderItem5 = em.createQuery("select e from Order o join o.orderItems e where e.id = 5",
                 OrderItem.class).getSingleResult();
             em.persist(Refund.builder().orderItem(orderItem5).reason(RefundAndExchangeReason.DELIVERY_DELAY)
                 .refundReasonDetail("TOO LATE!!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
+            //2
+            OrderItem orderItem7 = em.createQuery("select e from Order o join o.orderItems e where e.id = 7",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem7).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                    .refundReasonDetail("Broken Item").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
+
+            //3
+            OrderItem orderItem9 = em.createQuery("select e from Order o join o.orderItems e where e.id = 9",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem9).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                    .refundReasonDetail("Too Bad").quantity(orderItem9.getQuantity()).status(RefundAndExchangeStatus.REQUEST).build());
+
+            //4
+            OrderItem orderItem11 = em.createQuery("select e from Order o join o.orderItems e where e.id = 11",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem11).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                    .refundReasonDetail("Too Late to use").quantity(orderItem11.getQuantity()).status(RefundAndExchangeStatus.REJECT).build());
+
+            //5
+            OrderItem orderItem13 = em.createQuery("select e from Order o join o.orderItems e where e.id = 13",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem13).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                    .refundReasonDetail("Too Late to use").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
+
+            //6
+            OrderItem orderItem15 = em.createQuery("select e from Order o join o.orderItems e where e.id = 15",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem15).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .refundReasonDetail("I don't need it anymore.").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
+
+            //7
+            OrderItem orderItem17 = em.createQuery("select e from Order o join o.orderItems e where e.id = 17",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem17).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .refundReasonDetail("I don't need it anymore.").quantity(orderItem17.getQuantity()).status(RefundAndExchangeStatus.REJECT).build());
+
+            //8
+            OrderItem orderItem19 = em.createQuery("select e from Order o join o.orderItems e where e.id = 19",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem19).reason(RefundAndExchangeReason.DIFFERENCE_WITH_PRODUCT_INFORMATION)
+                    .refundReasonDetail("It's different!!").quantity(orderItem19.getQuantity()).status(RefundAndExchangeStatus.REQUEST).build());
+
+            //9
+            OrderItem orderItem21 = em.createQuery("select e from Order o join o.orderItems e where e.id = 21",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem21).reason(RefundAndExchangeReason.DIFFERENCE_WITH_PRODUCT_INFORMATION)
+                    .refundReasonDetail("It's different FROM what I see in website!").quantity(1).status(RefundAndExchangeStatus.REQUEST).build());
+
+
+            //10
+            OrderItem orderItem23 = em.createQuery("select e from Order o join o.orderItems e where e.id = 23",
+                    OrderItem.class).getSingleResult();
+            em.persist(Refund.builder().orderItem(orderItem23).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                    .refundReasonDetail("it took 1 year.").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
 
             tx.commit();
         } catch (Exception e) {
