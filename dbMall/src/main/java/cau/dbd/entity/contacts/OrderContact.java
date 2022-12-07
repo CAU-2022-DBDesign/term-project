@@ -1,4 +1,12 @@
 package cau.dbd.entity.contacts;
 
-public class OrderContact {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class OrderContact extends Contact{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 }
+

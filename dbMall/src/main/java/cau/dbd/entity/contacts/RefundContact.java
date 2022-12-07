@@ -1,4 +1,12 @@
 package cau.dbd.entity.contacts;
 
-public class RefundContact {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class RefundContact extends Contact{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 }
+
