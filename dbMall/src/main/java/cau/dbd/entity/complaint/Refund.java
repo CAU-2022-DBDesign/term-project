@@ -2,6 +2,7 @@ package cau.dbd.entity.complaint;
 
 import cau.dbd.entity.BaseTimeEntity;
 import cau.dbd.entity.Order;
+import cau.dbd.entity.OrderItem;
 import cau.dbd.entity.item.Item;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,13 +20,10 @@ public class Refund extends BaseTimeEntity {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "itemId")
-    private Item item;
+    @JoinColumn(name = "orderItemId")
+    private OrderItem orderItem;
 
     //private Delivery delivery;
 
@@ -38,12 +36,14 @@ public class Refund extends BaseTimeEntity {
     @Column(name = "refundStatus")
     private RefundAndExchangeStatus status;
 
+    private int quantity;
+
     @Builder
-    public Refund(Order order, Item item, RefundAndExchangeReason reason, String refundReasonDetail, RefundAndExchangeStatus status) {
-        this.order = order;
-        this.item = item;
+    public Refund(OrderItem orderItem, RefundAndExchangeReason reason, String refundReasonDetail, RefundAndExchangeStatus status, int quantity) {
+        this.orderItem = orderItem;
         this.reason = reason;
         this.refundReasonDetail = refundReasonDetail;
         this.status = status;
+        this.quantity = quantity;
     }
 }
