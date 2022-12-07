@@ -71,7 +71,7 @@ public class Initializer {
             Consumer william = em.createQuery("select e from Consumer e where e.name = 'William'", Consumer.class)
                     .getSingleResult();
 
-            Consumer elijah = em.createQuery("select e from Consumer e where e.name = ' Elijah'", Consumer.class)
+            Consumer elijah = em.createQuery("select e from Consumer e where e.name = 'Elijah'", Consumer.class)
                     .getSingleResult();
 
             /*--------------- Category ------------*/
@@ -236,10 +236,65 @@ public class Initializer {
                 .build());
 
             /*--------------- Exchange ------------*/
+            //1
             OrderItem orderItem3 = em.createQuery("select e from Order o join o.orderItems e where e.id = 3",
                 OrderItem.class).getSingleResult();
             em.persist(Exchange.builder().orderItem(orderItem3).reason(RefundAndExchangeReason.BAD_PRODUCT)
                 .exchangeReasonDetail("Item Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+
+            //2
+            OrderItem orderItem6 = em.createQuery("select e from Order o join o.orderItems e where e.id = 6",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem6).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                    .exchangeReasonDetail("It's too bad").quantity(orderItem6.getQuantity()).status(RefundAndExchangeStatus.REQUEST).build());
+
+            //3
+            OrderItem orderItem8 = em.createQuery("select e from Order o join o.orderItems e where e.id = 8",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem8).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .exchangeReasonDetail("I don't need it.").quantity(orderItem8.getQuantity()).status(RefundAndExchangeStatus.COMPLETED).build());
+
+            //4
+            OrderItem orderItem10 = em.createQuery("select e from Order o join o.orderItems e where e.id = 10",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem10).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .exchangeReasonDetail("I don't need it.").quantity(1).status(RefundAndExchangeStatus.REJECT).build());
+            //5
+            OrderItem orderItem12 = em.createQuery("select e from Order o join o.orderItems e where e.id = 12",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem12).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                    .exchangeReasonDetail("Too late").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+
+            //6
+            OrderItem orderItem14 = em.createQuery("select e from Order o join o.orderItems e where e.id = 14",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem14).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                    .exchangeReasonDetail("Item Broken").quantity(1).status(RefundAndExchangeStatus.APPROVE).build());
+
+            //7
+            OrderItem orderItem16 = em.createQuery("select e from Order o join o.orderItems e where e.id = 16",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem16).reason(RefundAndExchangeReason.BAD_PRODUCT)
+                    .exchangeReasonDetail("It's too bad").quantity(orderItem16.getQuantity()).status(RefundAndExchangeStatus.REQUEST).build());
+
+            //8
+            OrderItem orderItem18 = em.createQuery("select e from Order o join o.orderItems e where e.id = 18",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem18).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .exchangeReasonDetail("I don't need it.").quantity(orderItem18.getQuantity()).status(RefundAndExchangeStatus.COMPLETED).build());
+
+            //9
+            OrderItem orderItem20 = em.createQuery("select e from Order o join o.orderItems e where e.id = 20",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem20).reason(RefundAndExchangeReason.SIMPLE_CHANGE_OF_HEART)
+                    .exchangeReasonDetail("I changed my mind").quantity(orderItem20.getQuantity()).status(RefundAndExchangeStatus.COMPLETED).build());
+
+
+            //9
+            OrderItem orderItem22 = em.createQuery("select e from Order o join o.orderItems e where e.id = 22",
+                    OrderItem.class).getSingleResult();
+            em.persist(Exchange.builder().orderItem(orderItem22).reason(RefundAndExchangeReason.DELIVERY_DELAY)
+                    .exchangeReasonDetail("Bye").quantity(1).status(RefundAndExchangeStatus.COMPLETED).build());
 
 
             /*--------------- Refund ------------*/
